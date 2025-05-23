@@ -1,0 +1,7 @@
+{
+  "item.jtn.sigil_of_socketing": "Sigil of Socketing",
+  "item.jtn.sigil_of_socketing.desc": "Adds one socket to an item",
+
+  "item.jtn.sigil_of_withdrawal": "Sigil of Withdrawal",
+  "item.jtn.sigil_of_withdrawal.desc": "Removes all socketed gems from an item"
+}

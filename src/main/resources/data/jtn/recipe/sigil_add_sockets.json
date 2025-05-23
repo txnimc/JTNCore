@@ -1,0 +1,7 @@
+{
+  "type": "jtn:add_sockets",
+  "input": {
+    "item": "jtn:sigil_of_socketing"
+  },
+  "max_sockets": 2
+}

@@ -2,3 +2,8 @@ accessWidener v2 named
 accessible class net/minecraft/network/chat/TextColor
 extendable class net/minecraft/network/chat/TextColor
 accessible method net/minecraft/network/chat/TextColor <init> (ILjava/lang/String;)V
+accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen hoveredSlot Lnet/minecraft/world/inventory/Slot;
+accessible class net/minecraft/client/renderer/block/model/ItemOverrides
+extendable class net/minecraft/client/renderer/block/model/ItemOverrides
+accessible class net/minecraft/client/resources/model/ModelManager$ReloadState
+accessible method net/minecraft/client/renderer/block/model/ItemOverrides <init> ()V

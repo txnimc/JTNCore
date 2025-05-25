@@ -44,7 +44,6 @@ public class Gem implements CodecProvider<Gem> {
     protected transient final List<GemBonus> extraBonuses = new ArrayList<>();
 
     public Gem(Purity minPurity, List<GemBonus> bonuses, boolean unique) {
-
         this.minPurity = minPurity;
         this.bonuses = bonuses;
         this.unique = unique;
@@ -63,20 +62,20 @@ public class Gem implements CodecProvider<Gem> {
      * @param gem      The gem stack.
      */
     public void addInformation(GemView gem, Consumer<Component> list, AttributeTooltipContext ctx) {
-        if (this.isUnique()) {
-            list.accept(Component.translatable("text.apotheosis.unique").withStyle(Style.EMPTY.withColor(0xC73912)));
-            list.accept(CommonComponents.EMPTY);
-        }
+//        if (this.isUnique()) {
+//            list.accept(Component.translatable("text.jtn.unique").withStyle(Style.EMPTY.withColor(0xC73912)));
+//            list.accept(CommonComponents.EMPTY);
+//        }
         Style style = Style.EMPTY.withColor(0x0AFF0A);
-        list.accept(Component.translatable("text.apotheosis.socketable_into").withStyle(style));
-        addTypeInfo(list, this.bonusMap.keySet().toArray());
-        list.accept(CommonComponents.EMPTY);
+//        list.accept(Component.translatable("text.jtn.socketable_into").withStyle(style));
+//        addTypeInfo(list, this.bonusMap.keySet().toArray());
+//        list.accept(CommonComponents.EMPTY);
 
-        list.accept(Component.translatable("text.apotheosis.when_socketed_in").withStyle(ChatFormatting.GOLD));
+        list.accept(Component.translatable("text.jtn.when_socketed_in").withStyle(ChatFormatting.GOLD));
         Consumer<GemBonus> appendBonusToTooltip = bonus -> {
             if (bonus.supports(gem.purity())) {
                 Component modifComp = bonus.getSocketBonusTooltip(gem, ctx);
-                Component sum = Component.translatable("text.apotheosis.dot_prefix", Component.translatable("%s: %s", Component.translatable("gem_class." + bonus.getGemClass().key()), modifComp)).withStyle(ChatFormatting.GOLD);
+                Component sum = Component.translatable("text.jtn.dot_prefix", Component.translatable("%s: %s", Component.translatable("gem_class." + bonus.getGemClass().key()), modifComp)).withStyle(ChatFormatting.GOLD);
                 list.accept(sum);
             }
         };
@@ -186,13 +185,13 @@ public class Gem implements CodecProvider<Gem> {
                     sb.append("%s, ");
                     args[r] = Component.translatable(((LootCategory) types[i + r]).getDescIdPlural());
                 }
-                list.accept(Component.translatable("text.apotheosis.dot_prefix", Component.translatable(sb.substring(0, sb.length() - 2), args)).withStyle(style));
+                list.accept(Component.translatable("text.jtn.dot_prefix", Component.translatable(sb.substring(0, sb.length() - 2), args)).withStyle(style));
                 sb.setLength(0);
                 i += rem;
             }
         }
         else {
-            list.accept(Component.translatable("text.apotheosis.dot_prefix", Component.translatable("text.apotheosis.anything")).withStyle(style));
+            list.accept(Component.translatable("text.jtn.dot_prefix", Component.translatable("text.jtn.anything")).withStyle(style));
         }
     }
 

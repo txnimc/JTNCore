@@ -51,7 +51,7 @@ public class EnchantmentBonus extends GemBonus {
             desc += ".mustExist";
         }
         Component enchName = this.ench.value().description().plainCopy();
-        return Component.translatable(desc, level, Component.translatable("misc.apotheosis.level" + (level > 1 ? ".many" : "")), enchName).withStyle(ChatFormatting.GREEN);
+        return Component.translatable(desc, level, Component.translatable("misc.jtn.level" + (level > 1 ? ".many" : "")), enchName).withStyle(ChatFormatting.GREEN);
     }
 
     @Override

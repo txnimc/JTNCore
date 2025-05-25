@@ -1,5 +1,6 @@
 package toni.jtn.content.runes.gem;
 
+import net.minecraft.core.HolderLookup;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.base.Preconditions;

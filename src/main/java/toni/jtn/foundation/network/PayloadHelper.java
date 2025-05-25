@@ -65,7 +65,7 @@ public class PayloadHelper {
     }
     }
     #else
-    public void registerProviders() {
+    public static void registerProviders() {
         synchronized (ALL_PROVIDERS) {
             for (PayloadProvider prov : ALL_PROVIDERS.values()) {
                 #if NEO
@@ -80,9 +80,9 @@ public class PayloadHelper {
                     PayloadTypeRegistry.playC2S().register(prov.getType(), prov.getCodec());
                 }
 
-                ServerPlayNetworking.registerGlobalReceiver(prov.getType(), (payload, context) -> {
-                    context.server().execute(() -> {
-                        new PayloadHandler(prov).handle(payload, new IPayloadContext.Server(context));
+                ClientPlayNetworking.registerGlobalReceiver(prov.getType(), (payload, context) -> {
+                    context.client().execute(() -> {
+                        new PayloadHandler(prov).handle(payload, new IPayloadContext.Client(context));
                     });
                 });
                 #endif

@@ -19,7 +19,7 @@
 			"${group}.${namespace}.${name}"
 		],
 		"client": [
-			"${group}.${namespace}.${name}"
+			"${group}.${namespace}.${name}Client"
 		],
 		"fabric-datagen": [
 			"${group}.${namespace}.foundation.data.${name}Datagen"

@@ -36,7 +36,7 @@ import toni.jtn.foundation.codec.JTNCodecs;
 
 public final class LootCategory {
 
-    public static final Codec<LootCategory> CODEC = Codec.lazyInitialized(() -> legacyResolverCodec());
+    public static final Codec<LootCategory> CODEC = Codec.lazyInitialized(LootCategory::legacyResolverCodec);
     public static final Codec<LootCategory> OPTIONAL_CODEC = Codec.lazyInitialized(Registration.BuiltInRegs.LOOT_CATEGORY::byNameCodec);
     public static final Codec<Set<LootCategory>> SET_CODEC = JTNCodecs.setOf(CODEC);
     public static final StreamCodec<RegistryFriendlyByteBuf, LootCategory> STREAM_CODEC = ByteBufCodecs.registry(Registration.BuiltInRegs.LOOT_CATEGORY.key());
@@ -172,7 +172,7 @@ public final class LootCategory {
     /**
      * Legacy resolver codec to assist with backwards compat.
      * <p>
-     * Accepts a string as "apotheosis:path" instead of discarding it.
+     * Accepts a string as "jtn:path" instead of discarding it.
      */
     @Deprecated(forRemoval = true)
     private static Codec<LootCategory> legacyResolverCodec() {
@@ -183,7 +183,7 @@ public final class LootCategory {
             .xmap(Registration.BuiltInRegs.LOOT_CATEGORY::get, Registration.BuiltInRegs.LOOT_CATEGORY::getKey)
             .validate(
                 cat -> cat == Registration.LootCategories.NONE
-                    ? DataResult.error(() -> "Loot Category must not be apotheosis:none")
+                    ? DataResult.error(() -> "Loot Category must not be jtn:none")
                     : DataResult.success(cat));
     }
 

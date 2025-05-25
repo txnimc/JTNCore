@@ -9,6 +9,7 @@ import com.google.common.collect.Multimap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import net.minecraft.core.HolderLookup;
 import toni.jtn.JTN;
 import toni.jtn.content.runes.LootCategory;
 import toni.jtn.content.runes.gem.ExtraGemBonusRegistry.ExtraGemBonus;
@@ -21,7 +22,7 @@ import toni.jtn.foundation.registry.DynamicRegistry;
  * Registry of additional gem bonuses. This can be used to add conditional bonuses to gems, or modify
  * existing gems to add bonuses only when certain mods are present.
  * <p>
- * It can also be used by addon mods to add bonuses to Apotheosis-native gems.
+ * It can also be used by addon mods to add bonuses to jtn-native gems.
  */
 public class ExtraGemBonusRegistry extends DynamicRegistry<ExtraGemBonus> {
 

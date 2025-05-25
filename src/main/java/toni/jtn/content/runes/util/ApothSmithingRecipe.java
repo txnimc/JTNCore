@@ -1,6 +1,6 @@
 package toni.jtn.content.runes.util;
 
-//import dev.shadowsoffire.apotheosis.loot.LootCategory;
+//import dev.shadowsoffire.jtn.loot.LootCategory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.SmithingTransformRecipe;

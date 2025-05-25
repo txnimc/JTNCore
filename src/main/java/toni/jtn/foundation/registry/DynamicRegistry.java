@@ -1,21 +1,16 @@
 package toni.jtn.foundation.registry;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 
-import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
-import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.minecraft.server.packs.PackType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.RegistryOps;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -37,7 +32,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.ReloadableServerResources;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -65,6 +59,7 @@ import toni.lib.utils.PlatformUtils;
 // TODO: Drop the CodecProvider requirement from this class and bind it to a subclass. Objects without subtypes do not need CodecProvider.
 public abstract class DynamicRegistry<R extends CodecProvider<? super R>> extends SimpleJsonResourceReloadListener implements IdentifiableResourceReloadListener {
 
+    private HolderLookup.Provider registries;
     protected final Logger logger;
     protected final String path;
     protected final boolean synced;
@@ -104,14 +99,18 @@ public abstract class DynamicRegistry<R extends CodecProvider<? super R>> extend
     @Override
     public ResourceLocation getFabricId() { return JTN.location(path); }
 
+    public DynamicRegistry<R> injectRegistries(HolderLookup.Provider registries) {
+        this.registries = registries;
+        return this;
+    }
 
     /**
      * Constructs a new dynamic registry.
      *
-     * @param logger   The logger used by this listener for all relevant messages.
-     * @param path     The datapack path used by this listener for loading files.
-     * @param synced   If this listener will be synced over the network.
-     * @param subtypes If this listener supports subtyped objects (and the "type" key on top-level objects).
+     * @param logger     The logger used by this listener for all relevant messages.
+     * @param path       The datapack path used by this listener for loading files.
+     * @param synced     If this listener will be synced over the network.
+     * @param subtypes   If this listener supports subtyped objects (and the "type" key on top-level objects).
      * @apiNote After construction, {@link #registerToBus()} must be called during setup.
      */
     public DynamicRegistry(Logger logger, String path, boolean synced, boolean subtypes) {
@@ -148,7 +147,7 @@ public abstract class DynamicRegistry<R extends CodecProvider<? super R>> extend
             try {
                 if (JsonUtil.checkAndLogEmpty(ele, key, this.path, this.logger) ){// && JsonUtil.checkConditions(ele, key, this.path, this.logger, ops)) {
                     JsonObject obj = ele.getAsJsonObject();
-                    R deserialized = this.codecs.decode(JsonOps.INSTANCE, obj).getOrThrow(this::makeCodecException).getFirst();
+                    R deserialized = this.codecs.decode(RegistryOps.create(JsonOps.INSTANCE, registries), obj).getOrThrow(this::makeCodecException).getFirst();
                     Preconditions.checkNotNull(deserialized.getCodec(), "A " + this.path + " with id " + key + " is not declaring a codec.");
                     Preconditions.checkNotNull(this.codecs.getKey(deserialized.getCodec()), "A " + this.path + " with id " + key + " is declaring an unregistered codec.");
                     this.register(key, deserialized);
@@ -459,7 +458,6 @@ public abstract class DynamicRegistry<R extends CodecProvider<? super R>> extend
         if (this.synced) SyncManagement.registerForSync(this);
         //NeoForge.EVENT_BUS.addListener(this::addReloader);
 
-        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(this);
     }
 
 //    /**

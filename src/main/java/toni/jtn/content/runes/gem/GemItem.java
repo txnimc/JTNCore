@@ -48,7 +48,7 @@ public class GemItem extends Item {
             return super.getName(pStack);
         }
         MutableComponent comp = Component.translatable(this.getDescriptionId(pStack));
-        comp = Component.translatable("items.apotheosis.gem." + inst.purity().getSerializedName(), comp);
+        comp = Component.translatable("item.jtn.gem." + inst.purity().getSerializedName(), comp);
         return comp.withStyle(Style.EMPTY.withColor(inst.purity().getColor()));
     }
 

@@ -8,9 +8,9 @@
       "enchantment": "minecraft:efficiency",
       "gem_class": "jtn:breaker",
       "values": {
-        "normal": 1,
-        "flawless": 2,
-        "perfect": 3
+        "normal": 3,
+        "flawless": 5,
+        "perfect": 10
       }
     }
   ]

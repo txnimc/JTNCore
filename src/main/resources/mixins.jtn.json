@@ -6,8 +6,11 @@
   "mixins": [
     "ChunkGeneratorStructureStateMixin",
     "ItemContainerContentsAccessor",
+    "ItemStackMixin",
     "MultiNoiseBiomeSourceMixin",
     "SmithingMenuMixin",
+    "events.EnchantmentMixin",
+    "events.enchantment.EnchantmentHelperMixin",
     "util.ItemStackCachedObjectSourceMixin"
   ],
   "plugin": "toni.jtn.foundation.MixinPlugin",

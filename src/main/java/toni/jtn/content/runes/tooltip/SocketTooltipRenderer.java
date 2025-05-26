@@ -1,4 +1,4 @@
-package toni.jtn.content.runes;
+package toni.jtn.content.runes.tooltip;
 
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.joml.Matrix4f;
 import toni.jtn.JTN;
+import toni.jtn.content.runes.SocketedGems;
 import toni.jtn.content.runes.gem.GemInstance;
 import toni.jtn.foundation.events.AttributeTooltipContext;
 

@@ -6,6 +6,7 @@ import java.util.Map;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import toni.jtn.content.runes.gem.GemClass;
 import toni.jtn.content.runes.gem.GemInstance;
 import toni.jtn.content.runes.gem.GemView;
@@ -17,7 +18,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import toni.jtn.foundation.codec.JTNCodecs;
 import toni.jtn.foundation.events.AttributeTooltipContext;
-import toni.jtn.foundation.events.GetEnchantmentLevelEvent;
 
 public class EnchantmentBonus extends GemBonus {
 
@@ -43,7 +43,7 @@ public class EnchantmentBonus extends GemBonus {
     @Override
     public Component getSocketBonusTooltip(GemView gem, AttributeTooltipContext ctx) {
         int level = this.values.get(gem.purity());
-        String desc = "bonus." + this.getTypeKey() + ".desc";
+        String desc = "bonus." + this.getTypeKey() + ".raw";
         if (this.mode == Mode.GLOBAL) {
             desc += ".global";
         }
@@ -51,30 +51,35 @@ public class EnchantmentBonus extends GemBonus {
             desc += ".mustExist";
         }
         Component enchName = this.ench.value().description().plainCopy();
-        return Component.translatable(desc, level, Component.translatable("misc.jtn.level" + (level > 1 ? ".many" : "")), enchName).withStyle(ChatFormatting.GREEN);
+        return Component.translatable(desc, enchName, Component.translatable("enchantment.level." + level)).withStyle(ChatFormatting.GREEN);
     }
 
     @Override
-    public void getEnchantmentLevels(GemInstance gem, GetEnchantmentLevelEvent event) {
-        ItemEnchantments.Mutable enchantments = event.getEnchantments();
+    public void getEnchantmentLevels(GemInstance gem, Map<Enchantment, Integer> event) {
         int level = this.values.get(gem.purity());
-        if (this.mode == Mode.GLOBAL) {
-            for (Holder<Enchantment> e : enchantments.keySet()) {
-                int current = enchantments.getLevel(e);
-                if (current > 0) {
-                    enchantments.upgrade(e, current + level);
-                }
-            }
-        }
-        else if (this.mode == Mode.EXISTING) {
-            int current = enchantments.getLevel(this.ench);
-            if (current > 0) {
-                enchantments.upgrade(this.ench, current + level);
-            }
-        }
-        else {
-            enchantments.upgrade(this.ench, enchantments.getLevel(this.ench) + level);
-        }
+        var existing = event.getOrDefault(this.ench.value(), 0);
+        event.put(this.ench.value(), existing + level);
+        //enchantments.upgrade(this.ench, enchantments.getLevel(this.ench) + level);
+
+//        ItemEnchantments.Mutable enchantments = event.getEnchantments();
+//        int level = this.values.get(gem.purity());
+//        if (this.mode == Mode.GLOBAL) {
+//            for (Holder<Enchantment> e : enchantments.keySet()) {
+//                int current = enchantments.getLevel(e);
+//                if (current > 0) {
+//                    enchantments.upgrade(e, current + level);
+//                }
+//            }
+//        }
+//        else if (this.mode == Mode.EXISTING) {
+//            int current = enchantments.getLevel(this.ench);
+//            if (current > 0) {
+//                enchantments.upgrade(this.ench, current + level);
+//            }
+//        }
+//        else {
+//            enchantments.upgrade(this.ench, enchantments.getLevel(this.ench) + level);
+//        }
     }
 
     @Override

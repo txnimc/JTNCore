@@ -575,7 +575,7 @@ public abstract class DynamicRegistry<R extends CodecProvider<? super R>> extend
          * @implNote Only called on the logical client.
          */
         static void endSync(String path) {
-            if (!PlatformUtils.isDedicatedServer()) {
+            if (JTN.server != null) {
                 // On a singleplayer host, we have to re-register a copy of the original data instead of the synced data
                 // since the synced data may not contain the "full" information from the server.
                 ifPresent(path, DynamicRegistry::triggerClientsideReload);

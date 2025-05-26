@@ -31,8 +31,8 @@ public enum Purity implements StringRepresentable {
     CRACKED("cracked", 0x808080),
     CHIPPED("chipped", 0x33FF33),
     FLAWED("flawed", 0x5555FF),
-    NORMAL("normal", 0xBB00BB),
-    FLAWLESS("flawless", 0xED7014),
+    NORMAL("normal", 0xED7014),
+    FLAWLESS("flawless", 0xBB00BB),
     PERFECT("perfect", GradientColor.RAINBOW);
 
     public static final IntFunction<Purity> BY_ID = ByIdMap.continuous(Enum::ordinal, values(), ByIdMap.OutOfBoundsStrategy.ZERO);

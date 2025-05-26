@@ -13,6 +13,7 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 import toni.jtn.content.lore.PoemHandler;
+import toni.jtn.content.runes.SocketHelper;
 import toni.jtn.content.runes.gem.ExtraGemBonusRegistry;
 import toni.jtn.content.runes.gem.GemRegistry;
 import toni.jtn.content.runes.gem.bonus.GemBonus;
@@ -25,6 +26,7 @@ import net.fabricmc.api.ModInitializer;
 import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeConfigRegistry;
 import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.client.ConfigScreenFactoryRegistry;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import toni.jtn.foundation.events.GetEnchantmentLevelEvent;
 import toni.jtn.foundation.network.PayloadHelper;
 import toni.jtn.foundation.registry.ReloadListenerPayloads;
 import toni.lib.utils.PlatformUtils;
@@ -52,7 +54,7 @@ public class JTN implements ModInitializer
             NeoForgeConfigRegistry.INSTANCE.register(JTN.ID, type, spec);
         });
 
-        PlayerBlockBreakEvents.AFTER.register(PoemHandler::sendYggdrvald);
+        //PlayerBlockBreakEvents.AFTER.register(PoemHandler::sendYggdrvald);
 
         PayloadHelper.registerPayload(new ReloadListenerPayloads.Start.Provider());
         PayloadHelper.registerPayload(new ReloadListenerPayloads.Content.Provider<>());
@@ -61,6 +63,11 @@ public class JTN implements ModInitializer
         PayloadHelper.registerProviders();
 
         GemBonus.initCodecs();
+
+        GetEnchantmentLevelEvent.GET_ENCHANTMENT_LEVEL.register(((enchantments, stack) -> {
+            SocketHelper.getGems(stack).getEnchantmentLevels(enchantments);
+            return enchantments;
+        }));
 
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(JTN.location("extra_gem_bonuses"), ExtraGemBonusRegistry.INSTANCE::injectRegistries);
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(JTN.location("gems"), GemRegistry.INSTANCE::injectRegistries);

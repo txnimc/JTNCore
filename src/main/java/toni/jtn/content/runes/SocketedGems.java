@@ -1,9 +1,6 @@
 package toni.jtn.content.runes;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
@@ -11,6 +8,7 @@ import java.util.stream.Stream;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 
+import net.minecraft.world.item.enchantment.Enchantment;
 import org.jetbrains.annotations.Nullable;
 import toni.jtn.content.runes.gem.GemInstance;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -26,7 +24,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
-import toni.jtn.foundation.events.GetEnchantmentLevelEvent;
 
 /**
  * Live instance of socketed gems on an items. The size of the list is equal to the number of sockets on the object.
@@ -100,7 +97,7 @@ public record SocketedGems(ImmutableList<GemInstance> gems) implements List<GemI
         return amount;
     }
 
-    public void getEnchantmentLevels(GetEnchantmentLevelEvent event) {
+    public void getEnchantmentLevels(Map<Enchantment, Integer> event) {
         this.streamValidGems().forEach(inst -> inst.getEnchantmentLevels(event));
     }
 

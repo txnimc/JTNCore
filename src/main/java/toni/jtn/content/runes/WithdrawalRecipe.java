@@ -27,7 +27,7 @@ public class WithdrawalRecipe extends ApothSmithingRecipe implements ReactiveSmi
     public boolean matches(SmithingRecipeInput inv, Level level) {
         ItemStack base = inv.getItem(BASE);
         ItemStack sigils = inv.getItem(ADDITION);
-        return base.getCount() == 1 && sigils.is(Registration.Items.SIGIL_OF_WITHDRAWAL) && SocketHelper.getGems(base).stream().anyMatch(GemInstance::isValid);
+        return base.getCount() == 1 && sigils.is(Registration.Items.SIGIL_OF_WITHDRAWAL.value()) && SocketHelper.getGems(base).stream().anyMatch(GemInstance::isValid);
     }
 
     /**

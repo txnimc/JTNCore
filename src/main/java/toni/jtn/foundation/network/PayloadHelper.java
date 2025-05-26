@@ -22,7 +22,9 @@ import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import toni.jtn.JTN;
+import toni.jtn.JTNClient;
 import toni.jtn.foundation.registry.ReloadListenerPayloads;
+import toni.lib.utils.PlatformUtils;
 
 public class PayloadHelper {
 
@@ -80,38 +82,32 @@ public class PayloadHelper {
                     PayloadTypeRegistry.playC2S().register(prov.getType(), prov.getCodec());
                 }
 
-                ClientPlayNetworking.registerGlobalReceiver(prov.getType(), (payload, context) -> {
-                    context.client().execute(() -> {
-                        new PayloadHandler(prov).handle(payload, new IPayloadContext.Client(context));
-                    });
-                });
+                if (!PlatformUtils.isDedicatedServer()) {
+                    JTNClient.registerNetworkingHandler(prov);
+                }
                 #endif
             }
             locked = true;
         }
     }
 
-    public void registerProvidersClient() {
+    public static void registerProvidersClient() {
         synchronized (ALL_PROVIDERS) {
             for (PayloadProvider prov : ALL_PROVIDERS.values()) {
-                ClientPlayNetworking.registerGlobalReceiver(prov.getType(), (payload, context) -> {
-                    context.client().execute(() -> {
-                        new PayloadHandler(prov).handle(payload, new IPayloadContext.Client(context));
-                    });
-                });
+                JTNClient.registerNetworkingHandler(prov);
             }
             locked = true;
         }
     }
     #endif
 
-    private static class PayloadHandler<T extends CustomPacketPayload> implements IPayloadHandler<T> {
+    public static class PayloadHandler<T extends CustomPacketPayload> implements IPayloadHandler<T> {
 
         private PayloadProvider<T> provider;
         private Optional<PacketFlow> flow;
         private List<ConnectionProtocol> protocols;
 
-        private PayloadHandler(PayloadProvider<T> provider) {
+        public PayloadHandler(PayloadProvider<T> provider) {
             this.provider = provider;
             this.flow = provider.getFlow();
             this.protocols = provider.getSupportedProtocols();

@@ -19,9 +19,6 @@ public class PoemHandler {
         if (level.isClientSide)
             return;
 
-        if (ImmersiveMessagesManager.queueCount() > 2)
-            return;
-
         ImmersiveMessage.builder(10f, "MAKE THE SACRIFICE")
             .subtext(2f, "[10 Ancient Bones]", 13, subtext -> subtext
                 .font(ImmersiveFont.ROBOTO)

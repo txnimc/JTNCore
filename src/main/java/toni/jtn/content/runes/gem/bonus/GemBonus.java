@@ -1,5 +1,6 @@
 package toni.jtn.content.runes.gem.bonus;
 
+import java.util.Map;
 import java.util.function.Consumer;
 
 
@@ -7,6 +8,7 @@ import com.mojang.datafixers.kinds.App;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import net.minecraft.world.item.enchantment.Enchantment;
 import org.jetbrains.annotations.Nullable;
 import toni.jtn.JTN;
 import toni.jtn.content.runes.gem.GemClass;
@@ -24,7 +26,6 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.LevelAccessor;
@@ -34,7 +35,6 @@ import net.minecraft.world.phys.HitResult;
 import toni.jtn.foundation.codec.CodecMap;
 import toni.jtn.foundation.codec.CodecProvider;
 import toni.jtn.foundation.events.AttributeTooltipContext;
-import toni.jtn.foundation.events.GetEnchantmentLevelEvent;
 
 public abstract class GemBonus implements CodecProvider<GemBonus> {
 
@@ -189,7 +189,7 @@ public abstract class GemBonus implements CodecProvider<GemBonus> {
      * @param inst  The current gem instance.
      * @param event The GetEnchantmentLevelEvent, which allows for modification of enchantment levels.
      */
-    public void getEnchantmentLevels(GemInstance inst, GetEnchantmentLevelEvent event) {}
+    public void getEnchantmentLevels(GemInstance inst, Map<Enchantment, Integer> event) {}
 
     /**
      * Fires from LootModifier#apply(ObjectArrayList, LootContext)} when this bonus is active on the tool given by the context.

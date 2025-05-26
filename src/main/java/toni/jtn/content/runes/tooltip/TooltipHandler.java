@@ -1,4 +1,4 @@
-package toni.jtn.content.runes;
+package toni.jtn.content.runes.tooltip;
 
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
@@ -11,13 +11,18 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.chat.contents.PlainTextContents;
+import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.util.StringUtil;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import toni.jtn.JTN;
 import toni.jtn.JTNClient;
+import toni.jtn.content.runes.SocketHelper;
 import toni.jtn.foundation.Registration;
 import toni.jtn.foundation.events.ModifyComponents;
 
@@ -70,6 +75,31 @@ public class TooltipHandler {
         ModifyComponents.MODIFY_COMPONENTS.invoker().modifyComponents(event);
         if (event.isCanceled())
             return List.of();
+
+        if (!Screen.hasShiftDown()) {
+            boolean removed = event.tooltipElements.removeIf(elem -> {
+                if (!elem.left().isPresent())
+                    return false;
+
+                var left = (MutableComponent) elem.left().get();
+                if (left == null)
+                    return false;
+
+                if (left.getStyle().getColor() != null && left.getStyle().getColor().getValue() == 43520 && left.getContents() instanceof PlainTextContents.LiteralContents tc && tc.text() == " ")
+                    return true;
+
+                if (left.getContents() instanceof TranslatableContents trans && trans.getKey().equals("item.modifiers.mainhand"))
+                    return true;
+
+                if (left.getContents() instanceof TranslatableContents trans && trans.getKey().equals("attribute.modifier.plus.0"))
+                    return true;
+
+                if (left.getContents() instanceof PlainTextContents contents && left.getSiblings().isEmpty() &&StringUtil.isNullOrEmpty(contents.text()))
+                    return true;
+
+                return false;
+            });
+        }
 
         // text wrapping
         int tooltipTextWidth = event.tooltipElements.stream()

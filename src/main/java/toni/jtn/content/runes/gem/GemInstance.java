@@ -2,11 +2,11 @@ package toni.jtn.content.runes.gem;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 
+import net.minecraft.world.item.enchantment.Enchantment;
 import org.jetbrains.annotations.Nullable;
 import toni.jtn.content.runes.LootCategory;
 import toni.jtn.content.runes.gem.bonus.GemBonus;
@@ -14,7 +14,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.HitResult;
 import toni.jtn.foundation.Registration;
 import toni.jtn.foundation.events.AttributeTooltipContext;
-import toni.jtn.foundation.events.GetEnchantmentLevelEvent;
 import toni.jtn.foundation.registry.DynamicHolder;
 
 /**
@@ -194,7 +192,7 @@ public record GemInstance(DynamicHolder<Gem> gem, LootCategory category, Purity 
         return this.map(b -> b.onHurt(this, src, ent, amount)).orElse(amount);
     }
 
-    public void getEnchantmentLevels(GetEnchantmentLevelEvent event) {
+    public void getEnchantmentLevels(Map<Enchantment, Integer> event) {
         this.ifPresent(b -> b.getEnchantmentLevels(this, event));
     }
 

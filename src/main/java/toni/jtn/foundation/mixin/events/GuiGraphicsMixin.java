@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 import toni.jtn.JTNClient;
 import toni.jtn.content.runes.SocketHelper;
-import toni.jtn.content.runes.TooltipHandler;
+import toni.jtn.content.runes.tooltip.TooltipHandler;
 import toni.jtn.foundation.accessors.IComponentTooltip;
 
 import java.util.ArrayList;
@@ -38,15 +38,15 @@ public abstract class GuiGraphicsMixin implements IComponentTooltip {
     @Shadow
     private void renderTooltipInternal(Font font, List<ClientTooltipComponent> components, int mouseX, int mouseY, ClientTooltipPositioner tooltipPositioner) {}
 
-//    @Inject(method = "renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/GuiGraphics.renderTooltip (Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V", shift = At.Shift.BEFORE))
-//    private void jtn$cacheItemStack(Font font, ItemStack itemStack, int i, int j, CallbackInfo ci) {
-//        JTNClient.StackStorage.hoveredItem = itemStack;
-//    }
-//
-//    @Inject(method = "renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/GuiGraphics.renderTooltip (Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V", shift = At.Shift.AFTER))
-//    private void jtn$clearStack(Font font, ItemStack itemStack, int i, int j, CallbackInfo ci) {
-//        JTNClient.StackStorage.hoveredItem = ItemStack.EMPTY;
-//    }
+    @Inject(method = "renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/GuiGraphics.renderTooltip (Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V", shift = At.Shift.BEFORE))
+    private void jtn$cacheItemStack(Font font, ItemStack itemStack, int i, int j, CallbackInfo ci) {
+        JTNClient.StackStorage.hoveredItem = itemStack;
+    }
+
+    @Inject(method = "renderTooltip(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/GuiGraphics.renderTooltip (Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V", shift = At.Shift.AFTER))
+    private void jtn$clearStack(Font font, ItemStack itemStack, int i, int j, CallbackInfo ci) {
+        JTNClient.StackStorage.hoveredItem = ItemStack.EMPTY;
+    }
 
     @ModifyArgs(method = "renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderTooltipInternal(Lnet/minecraft/client/gui/Font;Ljava/util/List;IILnet/minecraft/client/gui/screens/inventory/tooltip/ClientTooltipPositioner;)V"))
     private void jtn$gatherComponents(Args args, Font font, List<Component> lines, Optional<TooltipComponent> data, int x, int y) {

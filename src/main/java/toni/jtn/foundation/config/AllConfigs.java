@@ -4,9 +4,11 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+import com.electronwill.nightconfig.core.UnmodifiableConfig;
 import toni.jtn.JTN;
 import toni.lib.config.ConfigBase;
 
@@ -66,9 +68,17 @@ public class AllConfigs {
 
         for (Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())
         {
-            for (var entry : pair.getValue().specification.getSpec().entrySet()) {
-                if (existing.add(entry.getKey()))
-                    translationBuilder.add(JTN.ID + ".configuration." + entry.getKey(), entry.getKey());
+            addEntrySetTranslations(existing, pair.getValue().specification.getSpec().entrySet(), translationBuilder);
+        }
+    }
+
+    public static void addEntrySetTranslations(HashSet<String> existing, Set<? extends UnmodifiableConfig.Entry> config, FabricLanguageProvider.TranslationBuilder translationBuilder) {
+        for (var entry : config) {
+            if (existing.add(entry.getKey()))
+                translationBuilder.add(JTN.ID + ".configuration." + entry.getKey(), entry.getKey());
+
+            if (entry.getValue() instanceof com.electronwill.nightconfig.core.AbstractConfig children) {
+                addEntrySetTranslations(existing, children.entrySet(), translationBuilder);
             }
         }
     }

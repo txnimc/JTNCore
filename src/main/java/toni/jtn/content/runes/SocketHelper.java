@@ -4,21 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.ToIntFunction;
-import java.util.stream.Stream;
 
-import net.minecraft.world.entity.Entity;
 import toni.jtn.JTN;
 import toni.jtn.content.runes.gem.GemInstance;
 import toni.jtn.content.runes.gem.UnsocketedGem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import toni.jtn.foundation.Registration.Components;
 import toni.jtn.foundation.codec.CachedObject;
-import toni.jtn.foundation.mixin.ItemContainerContentsAccessor;
+import toni.jtn.mixin.ItemContainerContentsAccessor;
 
 /**
  * Utility class for the manipulation of Sockets on items.

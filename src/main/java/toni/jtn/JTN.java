@@ -77,8 +77,6 @@ public class JTN implements ModInitializer
     }
 
 
-
-
     public static @Nullable Player getClientPlayer() {
         if (PlatformUtils.isDedicatedServer())
             return null;

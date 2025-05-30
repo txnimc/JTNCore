@@ -6,7 +6,9 @@ import java.util.Map;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import toni.jtn.content.runes.gem.GemClass;
 import toni.jtn.content.runes.gem.GemInstance;
 import toni.jtn.content.runes.gem.GemView;
@@ -15,7 +17,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
 import toni.jtn.foundation.codec.JTNCodecs;
 import toni.jtn.foundation.events.AttributeTooltipContext;
 
@@ -92,8 +93,8 @@ public class EnchantmentBonus extends GemBonus {
         return CODEC;
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public static Builder builder(HolderLookup.Provider p) {
+        return new Builder(p);
     }
 
     public static enum Mode {
@@ -105,17 +106,24 @@ public class EnchantmentBonus extends GemBonus {
     }
 
     public static class Builder extends GemBonus.Builder {
+        private final HolderLookup.Provider provider;
         private Holder<Enchantment> enchantment;
         private Mode mode;
         private Map<Purity, Integer> values;
 
-        public Builder() {
+        public Builder(HolderLookup.Provider p) {
+            this.provider = p;
             this.values = new HashMap<>();
             this.mode = Mode.SINGLE;
         }
 
         public Builder enchantment(Holder<Enchantment> enchantment) {
             this.enchantment = enchantment;
+            return this;
+        }
+
+        public Builder enchantment(ResourceKey<Enchantment> enchantment) {
+            this.enchantment = provider.lookup(Registries.ENCHANTMENT).get().getOrThrow(enchantment);
             return this;
         }
 
@@ -135,6 +143,24 @@ public class EnchantmentBonus extends GemBonus {
         @Override
         public EnchantmentBonus build(GemClass gemClass) {
             return new EnchantmentBonus(gemClass, this.enchantment, this.mode, this.values);
+        }
+
+        public GemBonus.Builder defaultValues() {
+            return this.value(Purity.CRACKED, 1)
+                .value(Purity.CHIPPED, 2)
+                .value(Purity.FLAWED, 3)
+                .value(Purity.NORMAL, 4)
+                .value(Purity.FLAWLESS, 5)
+                .value(Purity.PERFECT, 10);
+        }
+
+        public GemBonus.Builder values(int cracked, int chipped, int flawed, int normal, int flawless, int perfect) {
+            return this.value(Purity.CRACKED, cracked)
+                .value(Purity.CHIPPED, chipped)
+                .value(Purity.FLAWED, flawed)
+                .value(Purity.NORMAL, normal)
+                .value(Purity.FLAWLESS, flawless)
+                .value(Purity.PERFECT, perfect);
         }
     }
 

@@ -1,3 +1,4 @@
+import toni.blahaj.setup.modCompileOnly
 import toni.blahaj.setup.modImplementation
 
 plugins {
@@ -25,7 +26,9 @@ blahaj {
 		//deps.modImplementation(modrinth("wwoo", "2.3.4"))
 		//deps.modImplementation(modrinth("terralith", "2.5.8"))
 
-
+//		deps.modRuntimeOnly(modrinth("legendary-tooltips", "1.5.5"))
+//		deps.modRuntimeOnly(modrinth("prism-lib", "1.0.11"))
+//		deps.modRuntimeOnly(modrinth("iceberg", "1.3.2"))
 
 		//deps.modImplementation(modrinth("expanded-ecosphere", "XZsvA8Md"))
 //		deps.modImplementation(modrinth("cristel-lib", "1.2.8-fabric")) // required for EE

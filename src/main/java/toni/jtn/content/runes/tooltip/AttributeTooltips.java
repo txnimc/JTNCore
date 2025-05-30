@@ -69,7 +69,7 @@ public class AttributeTooltips {
                     .formatted(value < 0 ? ChatFormatting.RED : ChatFormatting.WHITE));
             }
             case PERCENTAGE -> {
-                return Component.literal((value > 0 ? "+" : "") + ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT.format((value * 100) + "%")
+                return Component.literal((value > 0 ? "+" : "") + ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT.format((value * 100))
                     .formatted(value < 0 ? ChatFormatting.RED : ChatFormatting.WHITE));
             }
             case MULTIPLIER -> {

@@ -1,0 +1,18 @@
+{
+  "bonuses": [
+    {
+      "type": "jtn:enchantment",
+      "enchantment": "minecraft:looting",
+      "gem_class": "jtn:melee_weapon",
+      "values": {
+        "chipped": 2,
+        "cracked": 1,
+        "flawed": 3,
+        "flawless": 5,
+        "normal": 4,
+        "perfect": 10
+      }
+    }
+  ],
+  "unique": true
+}

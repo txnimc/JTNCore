@@ -11,7 +11,6 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.ItemContainerContents;
@@ -26,14 +25,10 @@ import toni.jtn.content.runes.gem.Gem;
 import toni.jtn.content.runes.gem.GemItem;
 import toni.jtn.content.runes.gem.GemRegistry;
 import toni.jtn.content.runes.gem.Purity;
-import toni.jtn.foundation.codec.CodecProvider;
 import toni.jtn.foundation.items.TooltipItem;
 import toni.jtn.foundation.registry.DynamicHolder;
-import toni.jtn.foundation.registry.util.SingletonRecipeSerializer;
-import toni.lib.utils.VersionUtils;
+import toni.jtn.foundation.codec.SingletonRecipeSerializer;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class Registration {
@@ -104,6 +99,7 @@ public class Registration {
         public static final LootCategory TRIDENT = register("trident", s -> s.getItem() instanceof TridentItem);
         public static final LootCategory MELEE_WEAPON = register("melee_weapon", s -> getDefaultModifiers(s).compute(1, EquipmentSlot.MAINHAND) > 1, 2000);
         public static final LootCategory SHEARS = register("shears", s -> s.getItem() instanceof ShearsItem, 2500);
+        public static final LootCategory ANY = register("any", Predicates.alwaysTrue(), Integer.MAX_VALUE);
         public static final LootCategory NONE = register("none", Predicates.alwaysFalse(), Integer.MAX_VALUE);
 
         private static LootCategory register(String path, Predicate<ItemStack> filter, int priority) {

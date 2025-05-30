@@ -1,0 +1,18 @@
+{
+  "bonuses": [
+    {
+      "type": "jtn:enchantment",
+      "enchantment": "minecraft:fortune",
+      "gem_class": "jtn:breaker",
+      "values": {
+        "chipped": 2,
+        "cracked": 1,
+        "flawed": 3,
+        "flawless": 5,
+        "normal": 4,
+        "perfect": 10
+      }
+    }
+  ],
+  "unique": true
+}

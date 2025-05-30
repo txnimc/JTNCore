@@ -94,7 +94,7 @@ public class TooltipHandler {
                 if (left.getContents() instanceof TranslatableContents trans && trans.getKey().equals("attribute.modifier.plus.0"))
                     return true;
 
-                if (left.getContents() instanceof PlainTextContents contents && left.getSiblings().isEmpty() &&StringUtil.isNullOrEmpty(contents.text()))
+                if (left.getContents() instanceof PlainTextContents contents && left.getSiblings().isEmpty() && StringUtil.isNullOrEmpty(contents.text()))
                     return true;
 
                 return false;
